@@ -2,7 +2,7 @@
   <div>
     <h1>Список покупок:</h1>
     <div class="input-group mb-3">
-      <form class="login p-4" @submit.prevent="formProduct">
+      <form class="login p-4">
         <div class="mb-2">
           <input
             type="text"
@@ -40,11 +40,10 @@
         </div>
 
         <div class="mt-3">
-          <button 
-          type="submit" 
-          class="btn btn-success" 
-          @click="addProduct" 
-          
+          <button
+            type="submit"
+            class="btn btn-success"
+            @click.prevent="addProduct"
           >
             Добавить
           </button>
@@ -58,7 +57,7 @@
       <div
         class="product-list"
         v-for="(product, index) in produscList"
-        :key="product"
+        :key="index"
       >
         <h3>{{ product.title }}</h3>
         <button class="btn btn-warning" @click="editProduct(product)">
@@ -71,8 +70,8 @@
       </div>
     </div>
 
-    <Modal :title="'Редактирование товара'">
-      <form class="login p-4" @submit.prevent="formProduct">
+    <Modal v-model="addProductModal" :title="'Редактирование товара'">
+      <form v-if="selectedProduct" class="login p-4">
         <div class="mb-2">
           <input
             type="text"
@@ -101,7 +100,7 @@
             class="form-control"
             placeholder="Цена: "
             aria-label="Example text with two button addons"
-            v-model="priceProduct"
+            v-model="selectedProduct.price"
           />
         </div>
       </form>
@@ -124,20 +123,13 @@
         <button type="button" class="btn btn-danger">Удалить</button>
       </template>
     </Modal>
-
-    <button
-      type="button"
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#exampleModal"
-    >
-      Launch demo modal
-    </button>
   </div>
 </template>
 
 <script>
 import Modal from "@/components/Modal.vue";
+import firebase from "firebase";
+import "firebase/database";
 
 export default {
   name: "Products",
@@ -148,11 +140,13 @@ export default {
 
   data() {
     return {
+      addProductModal: false,
       deleteProductModal: false,
 
       selectedCategory: null,
       nameProduct: "",
       priceProduct: "",
+      selectedProduct: null,
 
       categoryOptions: [
         {
@@ -208,40 +202,46 @@ export default {
     };
   },
 
+  mounted() {
+    this.fetchProducts();
+  },
+
   methods: {
     async createProducts() {
-     const responce = await fetch(
-        "https://vue2-first-project-default-rtdb.firebaseio.com/products.json",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title: this.nameProduct,
-            price: this.priceProduct,
-            category: this.selectedCategory,
-          }),
-        }
-      );
-      const firebaseData = await responce.json()
-      console.log("firebaseData",firebaseData);
+      await firebase.database().ref(`/products`).push({
+        title: this.nameProduct,
+        price: this.priceProduct,
+        category: this.selectedCategory,
+      });
     },
 
-   async addProduct() {
-     await this.createProduct()
+    async fetchProducts() {
+      const snapshot = await firebase.database().ref(`/products`).once("value");
+
+      snapshot.forEach((childSnapshot) => {
+        const item = childSnapshot.val();
+        console.log("item", item);
+      });
+    },
+
+    async addProduct() {
+      await this.createProducts();
+
       this.produscList.push({
         title: this.nameProduct,
         price: this.priceProduct,
         category: this.selectedCategory,
-      })
+      });
     },
+
     removeProduct(index) {
       this.produscList.splice(index, 1);
     },
 
     editProduct(product) {
+      this.addProductModal = !this.addProductModal;
       console.log("EDIT product:", product);
+      this.selectedProduct = product;
     },
   },
 };

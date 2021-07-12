@@ -2,7 +2,7 @@
   <div>
     <div
       class="modal fade"
-      id="exampleModal"
+      :id="`exampleModal-${_uid}`"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
@@ -51,7 +51,7 @@ import bootstrap from "bootstrap/dist/js/bootstrap.min.js";
 export default {
   name: "Modal",
 
-  props: {  
+  props: {
     title: {
       type: String,
       default: "Modal title",
@@ -62,24 +62,29 @@ export default {
       default: false,
     },
   },
-/*   watch: {
-    myModal(newValue, oldValue) {
+
+  data() {
+    return {
+      myModal: null,
+    };
+  },
+
+  watch: {
+    value(newValue) {
       if (newValue) {
         this.myModal.show();
-      }
-      if (oldValue) {
+      } else {
         this.myModal.hide();
       }
-      
-    }
-  }, */
+    },
+  },
 
   mounted() {
-    console.log("MODAL", bootstrap);
-    var myModal = new bootstrap.Modal(document.getElementById("exampleModal"));
-    console.log("myModal", myModal);
-/*      myModal.show();
-     myModal.hide(); */
+    console.log("MODAL", this);
+    var newModal = new bootstrap.Modal(
+      document.getElementById(`exampleModal-${this._uid}`)
+    );
+    this.myModal = newModal;
   },
 };
 </script>
