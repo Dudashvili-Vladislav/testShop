@@ -51,7 +51,7 @@ import bootstrap from "bootstrap/dist/js/bootstrap.min.js";
 export default {
   name: "Modal",
 
-  props: {
+  props: {  
     title: {
       type: String,
       default: "Modal title",
@@ -62,13 +62,24 @@ export default {
       default: false,
     },
   },
+/*   watch: {
+    myModal(newValue, oldValue) {
+      if (newValue) {
+        this.myModal.show();
+      }
+      if (oldValue) {
+        this.myModal.hide();
+      }
+      
+    }
+  }, */
 
   mounted() {
     console.log("MODAL", bootstrap);
     var myModal = new bootstrap.Modal(document.getElementById("exampleModal"));
     console.log("myModal", myModal);
-    // myModal.show();
-    // myModal.hide();
+/*      myModal.show();
+     myModal.hide(); */
   },
 };
 </script>

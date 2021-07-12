@@ -40,7 +40,12 @@
         </div>
 
         <div class="mt-3">
-          <button type="submit" class="btn btn-success" @click="addProduct">
+          <button 
+          type="submit" 
+          class="btn btn-success" 
+          @click="addProduct" 
+          
+          >
             Добавить
           </button>
         </div>
@@ -205,7 +210,7 @@ export default {
 
   methods: {
     async createProducts() {
-      await fetch(
+     const responce = await fetch(
         "https://vue2-first-project-default-rtdb.firebaseio.com/products.json",
         {
           method: "POST",
@@ -213,18 +218,23 @@ export default {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            title: this.title,
-            text: this.text,
+            title: this.nameProduct,
+            price: this.priceProduct,
+            category: this.selectedCategory,
           }),
         }
       );
+      const firebaseData = await responce.json()
+      console.log("firebaseData",firebaseData);
     },
-    addProduct() {
+
+   async addProduct() {
+     await this.createProduct()
       this.produscList.push({
         title: this.nameProduct,
         price: this.priceProduct,
         category: this.selectedCategory,
-      });
+      })
     },
     removeProduct(index) {
       this.produscList.splice(index, 1);
