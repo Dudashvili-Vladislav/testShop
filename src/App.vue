@@ -21,6 +21,10 @@ export default {
   }
 }
 
+img {
+  max-width: 100%;
+}
+
 .product-item {
   width: 300px;
   text-align: center;
@@ -79,5 +83,9 @@ export default {
       color: #42b983;
     }
   }
+}
+
+.invalid-feedback {
+  text-align: left;
 }
 </style>

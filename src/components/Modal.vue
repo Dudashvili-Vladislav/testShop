@@ -71,6 +71,7 @@ export default {
 
   watch: {
     value(newValue) {
+      console.log("newValue", newValue);
       if (newValue) {
         this.myModal.show();
       } else {
@@ -84,6 +85,10 @@ export default {
     var newModal = new bootstrap.Modal(
       document.getElementById(`exampleModal-${this._uid}`)
     );
+
+    newModal._element.addEventListener("hidden.bs.modal", () => {
+      this.$emit("input", false);
+    });
     this.myModal = newModal;
   },
 };

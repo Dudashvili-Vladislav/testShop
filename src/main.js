@@ -9,6 +9,9 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
 
+import Vuelidate from "vuelidate";
+Vue.use(Vuelidate);
+
 Vue.config.productionTip = false;
 
 firebase.initializeApp({
@@ -21,7 +24,7 @@ firebase.initializeApp({
   appId: "1:868909121501:web:bfcf1b84416b41657f8034",
 });
 
-/* firebase.auth().onAuthStateChanged (() => {}) */    //Иннициализация VUE после атворизации 
+/* firebase.auth().onAuthStateChanged (() => {}) */ //Иннициализация VUE после атворизации
 
 new Vue({
   router,
