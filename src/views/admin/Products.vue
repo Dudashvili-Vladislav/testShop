@@ -162,43 +162,7 @@ export default {
           value: "tv",
         },
       ],
-
-      produscList: [
-        {
-          title: "Смартфон DEXP",
-          description: "Смартфон DEXP BL350 собран в корпусе",
-          price: "3 799",
-          image: null,
-          availability: true,
-          category: {
-            name: "Смартфоны",
-            value: "phones",
-          },
-        },
-        {
-          title: "Смартфон Xiaomi Mi",
-          description: "Смартфон Xiaomi Mi 11 Lite выполнен в розовом корпусе",
-          price: "27 999",
-          image: null,
-          availability: true,
-          category: {
-            name: "Смартфоны",
-            value: "phones",
-          },
-        },
-        {
-          title: "Смартфон Blackview",
-          description:
-            "Смартфон Blackview BV9900E – классическая «защищенная» модель.",
-          price: "25 999",
-          image: null,
-          availability: true,
-          category: {
-            name: "Смартфоны",
-            value: "phones",
-          },
-        },
-      ],
+      produscList: [],
     };
   },
 
@@ -220,6 +184,7 @@ export default {
 
       snapshot.forEach((childSnapshot) => {
         const item = childSnapshot.val();
+        this.produscList.push(item)
         console.log("item", item);
       });
     },
